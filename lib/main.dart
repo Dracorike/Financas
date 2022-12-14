@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:financas/model/transaction.dart';
 import 'package:financas/ui/components/card_save_expances.dart';
 import 'package:financas/ui/components/transaction_card.dart';
+import 'package:financas/ui/components/transaction_user_interface.dart';
 import 'package:flutter/material.dart';
 
 main() => runApp(const ExpancesApp());
@@ -18,12 +19,6 @@ class ExpancesApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   MyHomePage({super.key});
-  final _listTransaction = [
-    Transaction(id: 0, title: "Tênis novo", value: 80.00, date: DateTime.now()),
-    Transaction(
-        id: 1, title: "Lanche no Migs", value: 26.86, date: DateTime.now()),
-    Transaction(id: 2, title: "Airfryer", value: 579.99, date: DateTime.now())
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +34,7 @@ class MyHomePage extends StatelessWidget {
                 'Graphs',
               ),
             )),
-        Column(
-          children: _listTransaction.map((tr) {
-            return TransactionCard(transaction: tr);
-          }).toList(),
-        ),
-        const CardSaveExpances()
+        TransactionUserInterface()
       ]),
     );
   }

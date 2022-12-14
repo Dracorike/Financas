@@ -10,8 +10,8 @@ class CardSaveExpances extends StatefulWidget {
 }
 
 class _StateCardSaveExpances extends State<CardSaveExpances>{
-  String _titleExpance = '';
-  double _valueExpance = 0;
+  final _titleExpance = TextEditingController();
+  final _valueExpance = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +23,10 @@ class _StateCardSaveExpances extends State<CardSaveExpances>{
               children: [
                 TextField(
                   decoration: const InputDecoration(labelText: 'Título'),
-                  onChanged: (newValue) => _titleExpance = newValue,
+                  controller: _titleExpance,
                 ),
                 TextField(
-                  onChanged: (newValue) => _valueExpance = double.parse(newValue),
+                  controller: _valueExpance,
                   decoration: const InputDecoration(labelText: 'valor: (R\$)'),
                   keyboardType: TextInputType.number,
                 ),
@@ -34,7 +34,9 @@ class _StateCardSaveExpances extends State<CardSaveExpances>{
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        print('title: ${_titleExpance.text} \n value: ${_valueExpance.text}');
+                      },
                       child: const Text(
                         'Nova Transação',
                         style: TextStyle(color: Colors.purple),
