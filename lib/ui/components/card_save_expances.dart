@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 
-class CardSaveExpances extends StatefulWidget {
-  const CardSaveExpances({super.key});
-  
-  @override
-  State<StatefulWidget> createState() => _StateCardSaveExpances();  
-
-
-}
-
-class _StateCardSaveExpances extends State<CardSaveExpances>{
+class CardSaveExpances extends StatelessWidget {
+  CardSaveExpances({super.key, required this.saveNewExpance});
   final _titleExpance = TextEditingController();
   final _valueExpance = TextEditingController();
-
+  final void Function(String, double) saveNewExpance;
+  
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return Card(
           elevation: 5,
           child: Padding(
@@ -35,7 +28,9 @@ class _StateCardSaveExpances extends State<CardSaveExpances>{
                   children: [
                     TextButton(
                       onPressed: () {
-                        print('title: ${_titleExpance.text} \n value: ${_valueExpance.text}');
+                        final title = _titleExpance.text;
+                        final value = double.tryParse(_valueExpance.text) ?? 0;
+                        saveNewExpance(title, value);
                       },
                       child: const Text(
                         'Nova Transação',
@@ -49,5 +44,4 @@ class _StateCardSaveExpances extends State<CardSaveExpances>{
           ),
         );
   }
-
 }
