@@ -29,7 +29,7 @@ class TransactionCard extends StatelessWidget {
                 border: Border.all(color: Colors.black, width: 2)),
             padding: const EdgeInsets.all(10),
             child: Text(
-              'R\$ ${transaction.value.toStringAsFixed(2)} ',
+              'R\$ ${transaction.value.toStringAsFixed(2).replaceAll('.', ',')} ',
               style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
