@@ -8,27 +8,30 @@ class Chart extends StatelessWidget {
   final List<Transaction> recentTransactions;
   final int sevenDaysWeek = 7;
   List<Map<String, Object>> get groupedTransaction {
-    return List.generate(sevenDaysWeek, (index) {
-      double totalSum = 0.0;
-      final weekDay = DateTime.now().subtract(
-        Duration(days: index),
-      );
+    return List.generate(
+      sevenDaysWeek,
+      (index) {
+        double totalSum = 0.0;
+        final weekDay = DateTime.now().subtract(
+          Duration(days: index),
+        );
 
-      for (var transaction in recentTransactions) {
-        var sameDay = transaction.date.day == weekDay.day;
-        var sameMonth = transaction.date.month == weekDay.month;
-        var sameYear = transaction.date.year == weekDay.year;
+        for (var transaction in recentTransactions) {
+          var sameDay = transaction.date.day == weekDay.day;
+          var sameMonth = transaction.date.month == weekDay.month;
+          var sameYear = transaction.date.year == weekDay.year;
 
-        if (sameDay && sameMonth && sameYear) {
-          totalSum += transaction.value;
+          if (sameDay && sameMonth && sameYear) {
+            totalSum += transaction.value;
+          }
         }
-      }
 
-      return {
-        'day': DateFormat.E().format(weekDay)[0],
-        'value': totalSum,
-      };
-    });
+        return {
+          'day': DateFormat.E().format(weekDay)[0],
+          'value': totalSum,
+        };
+      },
+    ).reversed.toList();
   }
 
   double get _weekTotalValue {
@@ -39,25 +42,29 @@ class Chart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 6,
-      margin: const EdgeInsets.all(20),
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ...groupedTransaction.map((objectTransaction) {
-              return Flexible(
-                fit: FlexFit.tight,
-                child: ChartBar(
-                  label: objectTransaction['day'] as String,
-                  percentage: (objectTransaction['value'] as double) /_weekTotalValue,
-                  value: objectTransaction['value'] as double,
-                ),
-              );
-            })
-          ],
+    return SizedBox(
+      height: 200,
+      child: Card(
+        elevation: 6,
+        margin: const EdgeInsets.all(20),
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ...groupedTransaction.map((objectTransaction) {
+                return Flexible(
+                  fit: FlexFit.tight,
+                  child: ChartBar(
+                    label: objectTransaction['day'] as String,
+                    percentage:
+                        (objectTransaction['value'] as double) / _weekTotalValue,
+                    value: objectTransaction['value'] as double,
+                  ),
+                );
+              })
+            ],
+          ),
         ),
       ),
     );
