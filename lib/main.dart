@@ -50,6 +50,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _listTransaction = [];
+  final List<Transaction> _recentsTransactions = [];
   static const int maxNumberUid = 999999;
 
   void _createNewExpance(String title, double value, DateTime transactionDate) {
@@ -62,19 +63,30 @@ class _MyHomePageState extends State<MyHomePage> {
 
     setState(() {
       _listTransaction.add(newExpance);
+      _recentsTransactions.clear();
+      _recentsTransactions.addAll(_recentTransactionList);
     });
 
     Navigator.of(context).pop();
   }
 
-  void _openTransactionForm(BuildContext context) {
+  _openTransactionForm(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (ctx) {
           return CardSaveExpances(
-            saveNewExpance: ((title, value, transactionDate) => _createNewExpance(title, value, transactionDate)),
+            saveNewExpance: ((title, value, transactionDate) =>
+                _createNewExpance(title, value, transactionDate)),
           );
         });
+  }
+
+  _deleteExpance(int id) {
+    setState(() {
+      _listTransaction.removeWhere((element) => element.id == id);
+      _recentsTransactions.clear();
+      _recentsTransactions.addAll(_recentTransactionList);
+    });
   }
 
   List<Transaction> get _recentTransactionList {
@@ -100,9 +112,12 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(recentTransactions: _recentTransactionList),
+            Chart(recentTransactions: _recentsTransactions),
             _listTransaction.isNotEmpty
-                ? ListTransaction(listTransaction: _listTransaction)
+                ? ListTransaction(
+                    listTransaction: _listTransaction,
+                    deleteExpance: _deleteExpance,
+                  )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class ListTransaction extends StatelessWidget {
-  const ListTransaction({super.key, required this.listTransaction});
+  const ListTransaction(
+      {super.key, required this.listTransaction, required this.deleteExpance});
   final List<Transaction> listTransaction;
+  final Function(int) deleteExpance;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -15,10 +17,7 @@ class ListTransaction extends StatelessWidget {
           final transaction = listTransaction[index];
           return Card(
             elevation: 5,
-            margin: const EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 5
-            ),
+            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             child: ListTile(
               leading: CircleAvatar(
                 radius: 30,
@@ -32,6 +31,11 @@ class ListTransaction extends StatelessWidget {
               title: Text(transaction.title),
               subtitle: Text(
                 DateFormat("dd MM yyyy").format(transaction.date),
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete),
+                color: Theme.of(context).errorColor,
+                onPressed: () => deleteExpance(transaction.id),
               ),
             ),
           );
