@@ -16,25 +16,28 @@ class ExpancesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: const MyHomePage(),
-        theme: layoutTheme.copyWith(
-          colorScheme: layoutTheme.colorScheme.copyWith(
-            primary: Colors.purple,
-            secondary: Colors.amber,
-          ),
-          textTheme: layoutTheme.textTheme.copyWith(
-              headline6: const TextStyle(
+      home: const MyHomePage(),
+      theme: layoutTheme.copyWith(
+        colorScheme: layoutTheme.colorScheme.copyWith(
+          primary: Colors.purple,
+          secondary: Colors.amber,
+        ),
+        textTheme: layoutTheme.textTheme.copyWith(
+          headline6: const TextStyle(
             fontFamily: 'Arial',
             fontSize: 18,
             color: Colors.black,
-          )),
-          appBarTheme: layoutTheme.appBarTheme.copyWith(
-              titleTextStyle: const TextStyle(
+          ),
+        ),
+        appBarTheme: layoutTheme.appBarTheme.copyWith(
+          titleTextStyle: const TextStyle(
             fontFamily: 'Arial',
             fontSize: 20,
             fontWeight: FontWeight.bold,
-          )),
-        ));
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -46,15 +49,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _listTransaction = mockTransactions;
+  final List<Transaction> _listTransaction = [];
   static const int maxNumberUid = 999999;
 
-  void _createNewExpance(String title, double value) {
+  void _createNewExpance(String title, double value, DateTime transactionDate) {
     var newExpance = Transaction(
       id: Random().nextInt(maxNumberUid),
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: transactionDate,
     );
 
     setState(() {
@@ -69,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
         context: context,
         builder: (ctx) {
           return CardSaveExpances(
-            saveNewExpance: ((title, value) => _createNewExpance(title, value)),
+            saveNewExpance: ((title, value, transactionDate) => _createNewExpance(title, value, transactionDate)),
           );
         });
   }

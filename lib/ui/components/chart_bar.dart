@@ -13,6 +13,7 @@ class ChartBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(percentage);
     return Column(
       children: [
         FittedBox(child: Text(value.toStringAsFixed(2))),
@@ -36,6 +37,7 @@ class ChartBar extends StatelessWidget {
                 ),
               ),
               FractionallySizedBox(
+                alignment: AlignmentDirectional.bottomCenter,
                 heightFactor: percentage,
                 child: Container(
                   decoration: BoxDecoration(

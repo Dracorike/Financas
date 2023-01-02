@@ -40,31 +40,37 @@ class Chart extends StatelessWidget {
     });
   }
 
+  bool get _listRecentTransactionIsEmpty {
+    return recentTransactions.isEmpty;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      child: Card(
-        elevation: 6,
-        margin: const EdgeInsets.all(20),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ...groupedTransaction.map((objectTransaction) {
-                return Flexible(
-                  fit: FlexFit.tight,
-                  child: ChartBar(
-                    label: objectTransaction['day'] as String,
-                    percentage:
-                        (objectTransaction['value'] as double) / _weekTotalValue,
-                    value: objectTransaction['value'] as double,
-                  ),
-                );
-              })
-            ],
-          ),
+    return Card(
+      elevation: 6,
+      margin: const EdgeInsets.all(20),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ...groupedTransaction.map((objectTransaction) {
+              return Flexible(
+                fit: FlexFit.tight,
+                child: _listRecentTransactionIsEmpty
+                    ? ChartBar(
+                        label: objectTransaction['day'] as String,
+                        percentage: 0,
+                        value: 0)
+                    : ChartBar(
+                        label: objectTransaction['day'] as String,
+                        percentage: (objectTransaction['value'] as double) /
+                            _weekTotalValue,
+                        value: objectTransaction['value'] as double,
+                      ),
+              );
+            })
+          ],
         ),
       ),
     );
