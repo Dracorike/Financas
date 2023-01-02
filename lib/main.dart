@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:financas/ui/components/card_save_expances.dart';
 import 'package:financas/ui/components/chart.dart';
 import 'package:financas/ui/components/list_transaction.dart';
-import 'package:financas/util/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'model/transaction.dart';
@@ -114,9 +113,9 @@ class _MyHomePageState extends State<MyHomePage> {
     final availableSizeScreen = MediaQuery.of(context).size.height -
         mainScreenAppBar.preferredSize.height -
         MediaQuery.of(context).padding.top;
-    final double chartSize = availableSizeScreen * Constants.chartPercentSize;
+    final double chartSize = availableSizeScreen * 0.3;
     final double listTransactionSize =
-        availableSizeScreen * Constants.listTransactionPercentSize;
+        availableSizeScreen * 0.7;
 
     return Scaffold(
       appBar: mainScreenAppBar,
