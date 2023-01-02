@@ -52,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _listTransaction = [];
   final List<Transaction> _recentsTransactions = [];
   static const int maxNumberUid = 999999;
+  final String appBarTitle = 'App finanças';
 
   void _createNewExpance(String title, double value, DateTime transactionDate) {
     var newExpance = Transaction(
@@ -72,13 +73,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _openTransactionForm(BuildContext context) {
     showModalBottomSheet(
-        context: context,
-        builder: (ctx) {
-          return CardSaveExpances(
-            saveNewExpance: ((title, value, transactionDate) =>
-                _createNewExpance(title, value, transactionDate)),
-          );
-        });
+      context: context,
+      builder: (ctx) {
+        return CardSaveExpances(
+          saveNewExpance: ((title, value, transactionDate) =>
+              _createNewExpance(title, value, transactionDate)),
+        );
+      },
+    );
   }
 
   _deleteExpance(int id) {
@@ -100,16 +102,20 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final AppBar mainScreenAppBar = AppBar(
-      title: const Text('App finanças'),
+      title: Text(appBarTitle),
       actions: [
         IconButton(
-            onPressed: () => _openTransactionForm(context),
-            icon: const Icon(Icons.add))
+          onPressed: () => _openTransactionForm(context),
+          icon: const Icon(Icons.add),
+        )
       ],
     );
     final availableSizeScreen = MediaQuery.of(context).size.height -
         mainScreenAppBar.preferredSize.height -
         MediaQuery.of(context).padding.top;
+    final double chartSize = availableSizeScreen * 0.3;
+    final double listTransactionSize =
+        availableSizeScreen * 0.7;
 
     return Scaffold(
       appBar: mainScreenAppBar,
@@ -119,33 +125,19 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             SizedBox(
               child: SizedBox(
-                height: availableSizeScreen * 0.3,
-                child: Chart(recentTransactions: _recentsTransactions),
+                height: chartSize,
+                child: Chart(
+                  recentTransactions: _recentsTransactions,
+                ),
               ),
             ),
-            _listTransaction.isNotEmpty
-                ? SizedBox(
-                    height: availableSizeScreen * 0.7,
-                    child: ListTransaction(
-                      listTransaction: _listTransaction,
-                      deleteExpance: _deleteExpance,
-                    ),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 20),
-                      const Text('nothing here'),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        height: 200,
-                        child: Image.asset(
-                          'assets/images/waiting.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ],
-                  ),
+            SizedBox(
+              height: listTransactionSize,
+              child: ListTransaction(
+                listTransaction: _listTransaction,
+                deleteExpance: _deleteExpance,
+              ),
+            )
           ],
         ),
       ),
@@ -156,33 +148,4 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
-}
-
-List<Transaction> get mockTransactions {
-  return [
-    Transaction(
-      id: Random().nextInt(9999),
-      title: 'Item 0',
-      value: 99.99,
-      date: DateTime.now().subtract(
-        const Duration(days: 4),
-      ),
-    ),
-    Transaction(
-      id: Random().nextInt(9991),
-      title: 'Item 1',
-      value: 100.00,
-      date: DateTime.now().subtract(
-        const Duration(days: 3),
-      ),
-    ),
-    Transaction(
-      id: Random().nextInt(9992),
-      title: 'Item 2',
-      value: 400.00,
-      date: DateTime.now().subtract(
-        const Duration(days: 33),
-      ),
-    )
-  ];
 }

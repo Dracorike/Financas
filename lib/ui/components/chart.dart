@@ -7,14 +7,13 @@ class Chart extends StatelessWidget {
   const Chart({super.key, required this.recentTransactions});
   final List<Transaction> recentTransactions;
   final int sevenDaysWeek = 7;
+
   List<Map<String, Object>> get groupedTransaction {
     return List.generate(
       sevenDaysWeek,
       (index) {
         double totalSum = 0.0;
-        final weekDay = DateTime.now().subtract(
-          Duration(days: index),
-        );
+        final weekDay = DateTime.now().subtract(Duration(days: index));
 
         for (var transaction in recentTransactions) {
           var sameDay = transaction.date.day == weekDay.day;
@@ -40,10 +39,6 @@ class Chart extends StatelessWidget {
     });
   }
 
-  bool get _listRecentTransactionIsEmpty {
-    return recentTransactions.isEmpty;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -54,22 +49,24 @@ class Chart extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            ...groupedTransaction.map((objectTransaction) {
-              return Flexible(
-                fit: FlexFit.tight,
-                child: _listRecentTransactionIsEmpty
-                    ? ChartBar(
-                        label: objectTransaction['day'] as String,
-                        percentage: 0,
-                        value: 0)
-                    : ChartBar(
-                        label: objectTransaction['day'] as String,
-                        percentage: (objectTransaction['value'] as double) /
-                            _weekTotalValue,
-                        value: objectTransaction['value'] as double,
-                      ),
-              );
-            })
+            ...groupedTransaction.map(
+              (objectTransaction) {
+                return Flexible(
+                  fit: FlexFit.tight,
+                  child: recentTransactions.isEmpty
+                      ? ChartBar(
+                          label: objectTransaction['day'] as String,
+                          percentage: 0,
+                          value: 0,
+                        )
+                      : ChartBar(
+                          label: objectTransaction['day'] as String,
+                          percentage: (objectTransaction['value'] as double) / _weekTotalValue,
+                          value: objectTransaction['value'] as double,
+                        ),
+                );
+              },
+            )
           ],
         ),
       ),
