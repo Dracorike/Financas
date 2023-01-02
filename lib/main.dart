@@ -99,24 +99,37 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final AppBar mainScreenAppBar = AppBar(
+      title: const Text('App finanças'),
+      actions: [
+        IconButton(
+            onPressed: () => _openTransactionForm(context),
+            icon: const Icon(Icons.add))
+      ],
+    );
+    final availableSizeScreen = MediaQuery.of(context).size.height -
+        mainScreenAppBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('App finanças'),
-        actions: [
-          IconButton(
-              onPressed: () => _openTransactionForm(context),
-              icon: const Icon(Icons.add))
-        ],
-      ),
+      appBar: mainScreenAppBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(recentTransactions: _recentsTransactions),
+            SizedBox(
+              child: SizedBox(
+                height: availableSizeScreen * 0.3,
+                child: Chart(recentTransactions: _recentsTransactions),
+              ),
+            ),
             _listTransaction.isNotEmpty
-                ? ListTransaction(
-                    listTransaction: _listTransaction,
-                    deleteExpance: _deleteExpance,
+                ? SizedBox(
+                    height: availableSizeScreen * 0.7,
+                    child: ListTransaction(
+                      listTransaction: _listTransaction,
+                      deleteExpance: _deleteExpance,
+                    ),
                   )
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
